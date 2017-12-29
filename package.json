@@ -4,11 +4,11 @@
   "description": "Lighthouse NYE Superlatives",
   "main": "index.js",
   "scripts": {
-    "setup": "cd client && npm i && cd server && npm i",
-    "server": "cd server && cross-env PORT=3001 npm start",
-    "client": "cd client && npm run build && npm run start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "npm run server",
+    "setup": "cd client && yarn i && cd server && yarn i",
+    "server": "cd server && cross-env PORT=3001 yarn start",
+    "client": "cd client && yarn run build && yarn run start",
+    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "start": "yarn run server",
     "test": "test",
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
