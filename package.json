@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "setup": "cd client && yarn i && cd server && yarn i",
-    "server": "cd server && cross-env PORT=3001 yarn start",
+    "server": "cd server && yarn start",
     "client": "cd client && yarn run build && yarn run start",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "dev": "concurrently --kill-others --kill-others-on-fail \"yarn run server\" \"yarn run client\"",
     "start": "cd server && yarn && yarn start",
     "test": "test",
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build"

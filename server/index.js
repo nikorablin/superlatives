@@ -3,8 +3,67 @@ const path = require('path');
 
 const app = express();
 
+const QUESTIONS = [
+  {
+    id: 1,
+    text: 'Best car (male)',
+    answers: [
+      {
+        id: 1,
+        text: 'Nik Korablin'
+      },
+      {
+        id: 2,
+        text: 'Jason Korablin'
+      },
+      {
+        id: 3,
+        text: 'Zach Sayevskiy'
+      },
+      {
+        id: 4,
+        text: 'Max Tchekalenko'
+      }
+    ]
+  },
+  {
+    id: 2,
+    text: 'Best car (female)',
+    answers: [
+      {
+        id: 1,
+        text: 'asdf'
+      },
+      {
+        id: 2,
+        text: 'Jasdf'
+      },
+      {
+        id: 3,
+        text: 'Zach Sasdf'
+      },
+      {
+        id: 4,
+        text: 'Max asdf'
+      }
+    ]
+  }
+];
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.post('/api/init', (req, res) => {
+  res.json({ id: 1 });
+});
+
+app.post('/api/answer', (req, res) => {
+  res.json({ success: true });
+});
+
+app.get('/api/start', (req, res) => {
+  res.json(QUESTIONS);
+});
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
