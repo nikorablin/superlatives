@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "npm run server",
     "test": "test",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "repository": {
     "type": "git",
