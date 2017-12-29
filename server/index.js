@@ -1,54 +1,22 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import http from 'http';
+import mongoose from 'mongoose'
+
+import { Answer, Question, Survey, SuveryAnswer } from './models';
 
 const app = express();
 
-const QUESTIONS = [
-  {
-    id: 1,
-    text: 'Best car (male)',
-    answers: [
-      {
-        id: 1,
-        text: 'Nik Korablin'
-      },
-      {
-        id: 2,
-        text: 'Jason Korablin'
-      },
-      {
-        id: 3,
-        text: 'Zach Sayevskiy'
-      },
-      {
-        id: 4,
-        text: 'Max Tchekalenko'
-      }
-    ]
-  },
-  {
-    id: 2,
-    text: 'Best car (female)',
-    answers: [
-      {
-        id: 1,
-        text: 'asdf'
-      },
-      {
-        id: 2,
-        text: 'Jasdf'
-      },
-      {
-        id: 3,
-        text: 'Zach Sasdf'
-      },
-      {
-        id: 4,
-        text: 'Max asdf'
-      }
-    ]
+const DB_URL = process.env.MONGODB_URI ||
+  'mongodb://heroku_v3g7j2bg:p85se5ft6iib2cjobm5ubuu5qr@ds235807.mlab.com:35807/heroku_v3g7j2bg';
+
+mongoose.connect(DB_URL, (err, res) => {
+  if (err) {
+    console.log ('ERROR connecting to: ' + DB_URL + '. ' + err);
+  } else {
+    console.log ('Succeeded connected to: ' + DB_URL);
   }
-];
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -73,3 +41,5 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 5000;
 app.listen(port);
+
+module.exports = app;

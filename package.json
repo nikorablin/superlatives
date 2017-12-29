@@ -8,9 +8,9 @@
     "server": "cd server && yarn start",
     "client": "cd client && yarn run build && yarn run start",
     "dev": "concurrently --kill-others --kill-others-on-fail \"yarn run server\" \"yarn run client\"",
-    "start": "cd server && yarn && yarn start",
+    "start": "cd server && yarn && yarn serve",
     "test": "test",
-    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build && cd server && yarn --production=false && yarn run build"
   },
   "repository": {
     "type": "git",

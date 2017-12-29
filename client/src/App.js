@@ -9,14 +9,22 @@ class App extends PureComponent {
     name: '',
     error: null,
     questionIndex: 0,
-    complete: false
+    complete: false,
+    questions: []
   }
 
-  questions = [];
-
   componentWillMount() {
+    if (localStorage.getItem('complete')) {
+      this.setState({
+        complete: true
+      });
+    }
     Api.get('start').then(questions => {
-      this.questions = questions;
+      this.setState({
+        questions,
+        surveyId: localStorage.getItem('surveyId'),
+        questionIndex: localStorage.getItem('questionIndex') || 0
+      });
     });
   }
 
@@ -39,25 +47,37 @@ class App extends PureComponent {
       this.setState({
         surveyId
       });
+      localStorage.setItem('surveyId', surveyId);
     })
   }
 
   answerQuestion = (questionId, answerId) => {
-    const { surveyId } = this.state;
+    const { surveyId, questions } = this.state;
     Api.post('answer', { surveyId, questionId, answerId });
     const questionIndex = this.state.questionIndex + 1;
-    if (questionIndex === this.questions.length) {
+    if (questionIndex === questions.length) {
+      localStorage.setItem('complete', true);
       return this.setState({
         complete: true
       });
     }
+    localStorage.setItem('questionIndex', questionIndex);
     this.setState({
       questionIndex
     });
   }
 
   render() {
-    const { surveyId, name, error, questionIndex, complete } = this.state;
+    const { surveyId, name, error, questionIndex, complete, questions } = this.state;
+    if (questions.length === 0) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            Loading
+          </header>
+        </div>
+      );
+    }
     if (!surveyId) {
       return (
         <div className="App">
@@ -85,7 +105,7 @@ class App extends PureComponent {
     }
     return (
       <div className="App">
-        <Question submit={this.answerQuestion} question={this.questions[questionIndex]} />
+        <Question submit={this.answerQuestion} question={questions[questionIndex]} />
       </div>
     );
   }
