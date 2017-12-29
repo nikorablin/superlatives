@@ -1,0 +1,29 @@
+{
+  "name": "superlatives",
+  "version": "1.0.0",
+  "description": "Lighthouse NYE Superlatives",
+  "main": "index.js",
+  "scripts": {
+    "setup": "cd client && npm i && cd server && npm i",
+    "server": "cd server && cross-env PORT=3001 npm start",
+    "client": "cd client && npm run build && npm run start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "npm run server",
+    "test": "test",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikorablin/superlatives.git"
+  },
+  "author": "Nik Korablin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikorablin/superlatives/issues"
+  },
+  "homepage": "https://github.com/nikorablin/superlatives#readme",
+  "devDependencies": {
+    "concurrently": "3.5.1",
+    "cross-env": "5.1.3"
+  }
+}
