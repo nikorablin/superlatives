@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './App.css';
-import Question from './Question';
-import Api from './api';
+import Question from '../Question';
+import Api from '../../api';
 
 class App extends PureComponent {
   state = {
@@ -86,9 +86,9 @@ class App extends PureComponent {
           </header>
           { this.state.error &&
             <div className="App-error">{error}</div> }
-          <form className="input-group" onSubmit={this.start}>
-            <label>Enter your full name</label>
-            <input type="text" className="text-input" onChange={this.onNameChange} value={name} placeholder="Full name" />
+          <form className="form" onSubmit={this.start}>
+            <label className="label">Enter your full name</label>
+            <input type="text" className="input" onChange={this.onNameChange} value={name} placeholder="Full name" />
           </form>
           <button type="button" onClick={this.start} className="button">Continue</button>
         </div>
