@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import http from 'http';
 import mongoose from 'mongoose'
+import bodyParser from 'body-parser';
 
 import { Answer, Question, Survey, SuveryAnswer } from './models';
 
@@ -18,19 +19,31 @@ mongoose.connect(DB_URL, (err, res) => {
   }
 });
 
+app.use(bdoyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.post('/api/init', (req, res) => {
-  res.json({ id: 1 });
+  Survey.create({ name: req.body.name }).then(survey => {
+    res.json({ id: survey.id });
+  })
 });
 
 app.post('/api/answer', (req, res) => {
-  res.json({ success: true });
+  SurveyAnswer.create({
+    answer: req.body.answerId,
+    survey: req.body.surveyId
+  }).then(response => {
+    res.json({ success: true });
+  })
 });
 
 app.get('/api/start', (req, res) => {
-  res.json(QUESTIONS);
+  Question.find({}).sort('order').then(questions => {
+    res.json(questions);
+  });
 });
 
 // The "catchall" handler: for any request that doesn't
