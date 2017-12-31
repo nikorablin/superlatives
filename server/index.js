@@ -5,7 +5,10 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser';
 import { TYPES } from './constants/QuestionTypes';
 
-const root = path.resolve(__dirname, '..');
+let root = path.join(__dirname, '..');
+if (process.env.ENV === 'production') {
+  root = `/app/`;
+}
 
 import { Answer, Question, Survey, SurveyAnswer } from './models';
 
