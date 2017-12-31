@@ -5,7 +5,7 @@ export default class Question extends PureComponent {
 
   clickAnswer = event => {
     event.preventDefault();
-    this.props.onClick(this.props.answer.id);
+    this.props.onClick(this.props.answer._id);
   }
 
   render() {

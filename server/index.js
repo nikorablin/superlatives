@@ -4,7 +4,7 @@ import http from 'http';
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser';
 
-import { Answer, Question, Survey, SuveryAnswer } from './models';
+import { Answer, Question, Survey, SurveyAnswer } from './models';
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.post('/api/init', (req, res) => {
-  Survey.create({ name: req.body.name }).then(survey => {
+  Survey.create({ name: req.body.name, _id: new mongoose.Types.ObjectId() }).then(survey => {
     res.json({ id: survey.id });
   })
 });
@@ -34,16 +34,32 @@ app.post('/api/init', (req, res) => {
 app.post('/api/answer', (req, res) => {
   SurveyAnswer.create({
     answer: req.body.answerId,
-    survey: req.body.surveyId
+    survey: req.body.surveyId,
+    text: req.body.text
   }).then(response => {
     res.json({ success: true });
   })
 });
 
 app.get('/api/start', (req, res) => {
-  Question.find({}).sort('order').then(questions => {
+  Question.find({}).populate('answers').sort('order').then(questions => {
     res.json(questions);
   });
+});
+
+app.get('/api/results', (req, res) => {
+  res.json({});
+});
+
+app.post('/api/question/new', (req, res) => {
+  const questionId = new mongoose.Types.ObjectId();
+  const answers = req.body.answers.map(() => new mongoose.Types.ObjectId());
+  Question.create({ _id: questionId, answers, text: req.body.text, type: req.body.type });
+  Promise.all(
+    req.body.answers.map((answer, order) =>
+      Answer.create({ _id: answers[order], text: answer.text, question: questionId, order })
+    )
+  ).then(() => res.json({ success: true }));
 });
 
 // The "catchall" handler: for any request that doesn't

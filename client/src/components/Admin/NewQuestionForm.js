@@ -29,12 +29,13 @@ class NewQuestionForm extends PureComponent {
     return (
       <div className="input-group-inline" key={`answer-${index}`}>
         <input
+          tabIndex={index + 1}
           value={answer.text}
           placeholder={`Answer ${index + 1}`}
           onChange={this.updateAnswer.bind(this, index)}
           type="text"
           className="input" />
-        <a href="#" onClick={this.removeAnswer.bind(this, index)}>&times;</a>
+        <a href="#" tabIndex="-1" onClick={this.removeAnswer.bind(this, index)}>&times;</a>
       </div>
     );
   }

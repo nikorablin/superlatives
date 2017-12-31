@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import './Admin.css';
 import AuthForm from './AuthForm';
-import NewQuestionForm from './NewQuestionForm';
 import Api from '../../api';
 
 const PASSWORD = "superduper";
@@ -9,22 +8,20 @@ const PASSWORD = "superduper";
 class Admin extends PureComponent {
   state = {
     authed: false,
-    showQuestion: false
+    results: []
   };
 
   componentWillMount() {
+    Api.get('results').then(results => {
+      this.setState({
+        results
+      });
+    })
     if (localStorage.getItem('authed') === PASSWORD) {
       this.setState({
         authed: true
       });
     }
-  }
-
-  toggleQuestionForm = event => {
-    if (event) event.preventDefault();
-    this.setState({
-      showQuestion: !this.state.showQuestion
-    })
   }
 
   login = () => {
@@ -34,27 +31,14 @@ class Admin extends PureComponent {
     });
   }
 
-  submit = question => {
-    Api.post('question/new', question).then(response => {
-      this.setState({
-        showQuestion: false
-      });
-    });
-  }
-
   render() {
     const { authed, showQuestion } = this.state;
     if (!authed) {
       return <AuthForm login={this.login} />
     }
-    if (showQuestion) {
-      return <NewQuestionForm toggle={this.toggleQuestionForm} submit={this.submit} />
-    }
     return (
       <div className="Admin">
-        <h2>Admin</h2>
-        <p><a href="#" onClick={this.toggleQuestionForm}>Add question</a></p>
-        <p><a href="/admin/results">View results</a></p>
+        <h2>Results</h2>
       </div>
     );
   }

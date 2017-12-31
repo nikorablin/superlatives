@@ -23,7 +23,7 @@ class App extends PureComponent {
       this.setState({
         questions,
         surveyId: localStorage.getItem('surveyId'),
-        questionIndex: localStorage.getItem('questionIndex') || 0
+        questionIndex: parseInt(localStorage.getItem('questionIndex')) || 0
       });
     });
   }
@@ -51,9 +51,9 @@ class App extends PureComponent {
     })
   }
 
-  answerQuestion = (questionId, answerId) => {
+  answerQuestion = (questionId, answerId, text) => {
     const { surveyId, questions } = this.state;
-    Api.post('answer', { surveyId, questionId, answerId });
+    Api.post('answer', { surveyId, questionId, answerId, text });
     const questionIndex = this.state.questionIndex + 1;
     if (questionIndex === questions.length) {
       localStorage.setItem('complete', true);
