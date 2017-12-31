@@ -5,6 +5,8 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser';
 import { TYPES } from './constants/QuestionTypes';
 
+const root = path.resolve(__dirname, '..');
+
 import { Answer, Question, Survey, SurveyAnswer } from './models';
 
 const app = express();
@@ -24,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '..', 'client/build')));
+app.use(express.static(path.join(root, 'client/build')));
 
 app.post('/api/init', (req, res) => {
   Survey.create({ name: req.body.name, _id: new mongoose.Types.ObjectId() }).then(survey => {
@@ -101,7 +103,7 @@ app.post('/api/question/new', (req, res) => {
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client/build/index.html'));
+  res.sendFile(path.join(root, 'client/build/index.html'));
 });
 
 const port = process.env.PORT || 5000;
