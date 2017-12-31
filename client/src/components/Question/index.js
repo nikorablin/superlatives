@@ -22,11 +22,11 @@ export default class Question extends PureComponent {
     this.setState({
       value: ''
     });
-    this.props.submit(this.props.question.id, null, this.state.value);
+    this.props.submit(this.props.question._id, null, this.state.value);
   }
 
   handleClick = answerId => {
-    this.props.submit(this.props.question.id, answerId);
+    this.props.submit(this.props.question._id, answerId);
   }
 
   onChange = event => {

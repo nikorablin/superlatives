@@ -17,3 +17,19 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
+table {
+  text-align: left;
+  color: #fff;
+}
+
+td, th {
+  padding: 5px;
+}
+
+.textResults {
+  color: #fff;
+  text-align: left;
+  padding: 5px;
+}

@@ -3,6 +3,7 @@ import path from 'path';
 import http from 'http';
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser';
+import { TYPES } from './constants/QuestionTypes';
 
 import { Answer, Question, Survey, SurveyAnswer } from './models';
 
@@ -35,6 +36,7 @@ app.post('/api/answer', (req, res) => {
   SurveyAnswer.create({
     answer: req.body.answerId,
     survey: req.body.surveyId,
+    question: req.body.questionId,
     text: req.body.text
   }).then(response => {
     res.json({ success: true });
@@ -48,7 +50,41 @@ app.get('/api/start', (req, res) => {
 });
 
 app.get('/api/results', (req, res) => {
-  res.json({});
+  SurveyAnswer.find({})
+  .populate('answer')
+  .populate({
+    path: 'question',
+    populate: { path: 'answers' }
+  }).then(answers => {
+    const results = answers
+      .filter(answer => answer.question.type === TYPES.RADIO)
+      .reduce((map, surveyAnswer) => {
+        if (!map[surveyAnswer.question._id]) {
+          map[surveyAnswer.question._id] = {
+            text: surveyAnswer.question.text,
+            answers: surveyAnswer.question.answers.reduce((map, answer) => {
+              map[answer._id] = {
+                text: answer.text,
+                count: 0
+              }
+              return map;
+            }, {})
+          }
+        }
+        map[surveyAnswer.question._id].answers[surveyAnswer.answer._id].count++;
+        return map;
+      }, {});
+    const textResults = answers
+      .filter(answer => answer.question.type === TYPES.TEXT)
+      .reduce((map, surveyAnswer) => {
+        if (!map[surveyAnswer.question._id]) {
+          map[surveyAnswer.question._id] = { text: surveyAnswer.question.text, results: [] };
+        }
+        map[surveyAnswer.question._id].results.push(surveyAnswer.text);
+        return map;
+      }, {});
+    res.json({ results, textResults });
+  });
 });
 
 app.post('/api/question/new', (req, res) => {
