@@ -14,11 +14,6 @@ class App extends PureComponent {
   }
 
   componentWillMount() {
-    if (localStorage.getItem('complete')) {
-      this.setState({
-        complete: true
-      });
-    }
     Api.get('start').then(questions => {
       this.setState({
         questions,
@@ -56,7 +51,8 @@ class App extends PureComponent {
     Api.post('answer', { surveyId, questionId, answerId, text });
     const questionIndex = this.state.questionIndex + 1;
     if (questionIndex === questions.length) {
-      localStorage.setItem('complete', true);
+      localStorage.removeItem('surveyId');
+      localStorage.removeItem('questionIndex');
       return this.setState({
         complete: true
       });
