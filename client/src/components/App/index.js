@@ -78,7 +78,7 @@ class App extends PureComponent {
       return (
         <div className="App">
           <header className="App-header">
-            Lighthouse 2018 Superlatives
+            Lighthouse 2019 Superlatives
           </header>
           { this.state.error &&
             <div className="App-error">{error}</div> }
