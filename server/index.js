@@ -15,7 +15,7 @@ import { Answer, Question, Survey, SurveyAnswer } from './models';
 const app = express();
 
 const DB_URL = process.env.MONGODB_URI ||
-  'mongodb://heroku_v3g7j2bg:p85se5ft6iib2cjobm5ubuu5qr@ds235807.mlab.com:35807/heroku_v3g7j2bg';
+  'mongodb://heroku_tw88z5d3:qb9nca790eln7itmtnn33is6et@ds133547.mlab.com:33547/heroku_tw88z5d3';
 
 mongoose.connect(DB_URL, (err, res) => {
   if (err) {

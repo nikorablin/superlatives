@@ -4,7 +4,7 @@
   "description": "Lighthouse NYE Superlatives",
   "main": "index.js",
   "scripts": {
-    "setup": "cd client && yarn i && cd server && yarn i",
+    "setup": "cd client && yarn install && cd server && yarn install",
     "server": "cd server && yarn start",
     "client": "cd client && yarn run build && yarn run start",
     "dev": "concurrently --kill-others --kill-others-on-fail \"yarn run server\" \"yarn run client\"",
