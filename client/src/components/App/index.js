@@ -78,7 +78,7 @@ class App extends PureComponent {
       return (
         <div className="App">
           <header className="App-header">
-            Lighthouse {(new Date()).getFullYear() + 1} Superlatives
+            Lighthouse {(new Date()).getFullYear()} Superlatives
           </header>
           { this.state.error &&
             <div className="App-error">{error}</div> }
