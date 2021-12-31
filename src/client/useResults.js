@@ -1,6 +1,14 @@
 import { useQuery } from 'react-query';
 import supabase from './supabaseClient';
 
+const formatResults = (count = 'count') => (acc, r) => {
+  acc[r.id] = {
+    name: r.question,
+    results: [...(acc?.[r.id]?.results || []), { name: r.answer, count: r[count] }],
+  };
+  return acc;
+}
+
 const getResults = async () => {
   const { data } = await supabase
     .from('results')
@@ -10,21 +18,9 @@ const getResults = async () => {
     .from('text_results')
     .select('*');
   
-  const formattedResults = data.reduce((acc, r) => {
-    acc[r.id] = {
-      name: r.question,
-      result: [...(acc?.[r.id]?.result.split(', ') || []), `${r.answer}: ${r.total}`].join(', '),
-    };
-    return acc;
-  }, {});
+  const formattedResults = data.reduce(formatResults('total'), {});
 
-  const formattedText = textResults.reduce((acc, r) => {
-    acc[r.id] = {
-      name: r.question,
-      results: [...(acc?.[r.id]?.results || []), { name: r.answer, count: r.count }],
-    };
-    return acc;
-  }, {});
+  const formattedText = textResults.reduce(formatResults(), {});
 
   return { radio: formattedResults, text: formattedText };
 };
