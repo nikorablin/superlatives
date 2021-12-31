@@ -36,7 +36,7 @@ const getSurvey = (setQuestion, surveyId) => async ({ name, id } = {}) => {
 
 const submitAnswer = setQuestion => async ({ question, survey, answer, text }) => {
   setQuestion(prevQuestion => prevQuestion + 1);
-  const { data, error } = await supabase
+  await supabase
     .from('survey_answers')
     .insert([{
       question,
@@ -44,7 +44,6 @@ const submitAnswer = setQuestion => async ({ question, survey, answer, text }) =
       answer,
       text,
     }]);
-  console.log(data, error);
 }
 
 export const useSurvey = () => {
