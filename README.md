@@ -1,4 +1,4 @@
-<span style="font-size:100px">🥳</span>
+# <p align="center">🥳</p>
 
 # Superlatives
 
